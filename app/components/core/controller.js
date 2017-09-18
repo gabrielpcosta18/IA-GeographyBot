@@ -4,18 +4,24 @@ const swipl = require('swipl');
 swipl.call(`consult("C:/Users/Vostro/Documents/workspace/ufam/IA/IA-GeographyBot/app/components/core/knowledge.pl")`);
 
 function process(command, value) {
-    let query = new swipl.Query(`${command}("${value}", Y)`);
-    console.log(command, value);
-    let ret = null;
-    while (ret = query.next()) {
-        if(ret != null)
-            console.log(ret);
-        query.close();
-        return ret.Y;
+    let query;
+    try { 
+        query = new swipl.Query(`${command}("${value}", Y)`);
+        console.log(`${command}("${value}", Y)`);
+        let ret = null;
+        while (ret = query.next()) {
+            query.close();
+            return [ret.Y, false];
+        }
+    }
+    catch(e) {
+        console.log(e);
+        
+        return ['Meio cansado T_T', true];
     }
 
-    query.close();
-    return null;
+    // query.close();
+    return [null, 'false'];
 }
 
 module.exports = function() {
@@ -37,12 +43,13 @@ module.exports = function() {
         const chatId = msg.chat.id; 
         let resp = process(match[1], match[2].toLowerCase());
 
-        if(resp != null) {
-            resp = 'Acredito fortemente que é ' + resp;
+        if(resp[0] != null && !resp[1]) {
+            resp = 'Acredito fortemente que é ' + resp[0];
         }
-        else {
+        else if(!resp[1]){
             resp = 'Entendi a pergunta, mas... Não lembro agora xD';
         }
+        else resp = resp[0];
         bot.sendMessage(chatId, resp); 
     });
 
@@ -50,25 +57,27 @@ module.exports = function() {
         const chatId = msg.chat.id; 
         let resp = process(match[1], match[2].toLowerCase());
 
-        if(resp != null) {
-            resp = 'Acredito fortemente que é ' + resp + "*1000 km²";
+        if(resp[0] != null && !resp[1]) {
+            resp = 'Acredito fortemente que é ' + resp[0] + "*1000 km²";
         }
-        else {
+        else if(!resp[1]){
             resp = 'Entendi a pergunta, mas... Não lembro agora xD';
         }
+        else resp = resp[0];
         bot.sendMessage(chatId, resp); 
     });
 
-    bot.onText(/^(?:Q|q)ua(?:l|is) (?:é |são )?(?:a?(?:s)?)? (comida) (?:típica) d(?:(?:o|a )(?:região )?)((?:[^?])+)+\??/, (msg, match) => { 
+    bot.onText(/^(?:Q|q)ua(?:l|is) (?:é |são )?(?:a(?:s)?)? (comida?)(?:s)? (?:típica(?:s)? )?d(?:(?:o |a )(?:região )?)((?:[^?])+)+\??/, (msg, match) => { 
         const chatId = msg.chat.id; 
         let resp = process(match[1], match[2].toLowerCase());
 
-        if(resp != null) {
-            resp = 'Acredito fortemente que é ' + resp;
+        if(resp[0] != null && !resp[1]) {
+            resp = 'Acredito fortemente que são ' + resp[0][1] + ' e ' + resp[0][0];
         }
-        else {
+        else if(!resp[1]){
             resp = 'Entendi a pergunta, mas... Não lembro agora xD';
         }
+        else resp = resp[0];
         bot.sendMessage(chatId, resp); 
     });
 
@@ -76,12 +85,13 @@ module.exports = function() {
         const chatId = msg.chat.id; 
         let resp = process(match[1], match[2].toLowerCase());
 
-        if(resp != null) {
-            resp = 'Acredito fortemente que é ' + resp + " (valor em bilhões)";
+        if(resp[0] != null && !resp[1]) {
+            resp = 'Acredito fortemente que é ' + resp[0] + " (valor em bilhões)";
         }
-        else {
+        else if(!resp[1]){
             resp = 'Entendi a pergunta, mas... Não lembro agora xD';
         }
+        else resp = resp[0];
         bot.sendMessage(chatId, resp); 
     });
 
