@@ -7,7 +7,10 @@ Matrícula: 21553686
 ## Instruções para instalação do projeto
 
 ````
-Pré-Requisitos: Necessário que o NPM esteja instalado, assim como NPM
+Pré-Requisitos
+- Necessário que o NPM esteja instalado.
+- Conexão com internet.
+- Swi-Prolog instalado na máquina e definido na variável de ambiente do sistema.
 ````
 
 Para executar o servidor responsável por receber as requisições do bot do telegram siga as seguintes etapas:
@@ -38,3 +41,16 @@ Alguns detalhes do ambiente de desenvolvimento e de teste:
     - Nodejs versão 8.1.0
     - NPM versão 5.0.3
     - Python 2.7v 32 bits
+
+## Perguntas reconhecidas
+
+Atualmente o bot ainda conta com uma quantidade pequena e limitada de perguntas que são reconhecidas.
+
+A estrutura básica delas são:
+- Qual é a capital do [estado] X?
+- Qual é o tamanho do [estado] X?
+- Qual é o pib do [estado] X?
+- Quais são as comidas típicas de X?
+- /help
+
+Este último oferece algum apoio para que o usuário inicie a comunicação com o bot.
